@@ -39,7 +39,6 @@ async function enviarMensagem() {
         vaiParaFinalDoChat();
         
         const resposta = await response.json();
-        console.log('resposta', resposta.response)
         novaBolhaBot.innerHTML = resposta.response;
 
         vaiParaFinalDoChat();
