@@ -1,12 +1,11 @@
 import { chat, funcoes } from './inicializaChat.js';
-import { incorporarDocumentos, incorporarPergunta } from './embedding.js';
+import { incorporarDocumentos, incorporarPergunta, leArquivos } from './embedding.js';
+
+const arquivos = await leArquivos(["Pacotes_Argentina.txt", "Pacotes_EUA.txt", "Politicas.txt"]);
+
 
 // Transforma o texto em um modelo vetorial
-const documentos = await incorporarDocumentos(
-    ["A política de cancelamento é de 30 dias antes da viagem, caso contrário, não faremos o reembolso",
-    "Viagem para a Disney, 6 dias, R$ 20.000,00 - Viagem para a Disney, 10 dias, R$ 25.000,00"
-    ]
-);
+const documentos = await incorporarDocumentos(arquivos);
 
 export async function executaChat(mensagem) {
   console.log("Tamanho do histórico: " + (await chat.getHistory()).length);
