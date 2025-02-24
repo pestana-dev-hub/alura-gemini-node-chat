@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { FunctionDeclarationSchemaType, GoogleGenerativeAI } from "@google/generative-ai";
 
 const geminiApiKey = process.env.GEMINI_API_KEY
 
@@ -18,7 +18,27 @@ const funcoes = {
     }
 };
 
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const tools = [
+    {
+        functionDeclarations: [
+            {
+                name: "taxaJurosParcelamento",
+                description: "Retornar a taxa de juros para parcelamento de acordo com a quantidade de meses.",
+                parameters: {
+                    type: FunctionDeclarationSchemaType.OBJECT,
+                    properties: {
+                        value: { type: FunctionDeclarationSchemaType.NUMBER }
+                    },
+                    required: ["value"]
+                }
+            }
+        ]
+    }
+]
+
+const model = genAI.getGenerativeModel(
+    { model: "gemini-1.0-pro", tools },
+    { apiVersion: "v1beta" });
 
 let chat
 
@@ -40,4 +60,4 @@ function inicializaChat() {
     });
 }
 
-export { chat, inicializaChat }
+export { chat, funcoes, inicializaChat }
